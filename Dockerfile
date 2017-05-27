@@ -3,7 +3,7 @@ FROM    hermsi/alpine-fpm-php
 LABEL	maintainer "https://github.com/hermsi1337"
 
 # Get some stuff in order to work properly
-RUN	apk --no-cache --update --virtual .build-dependencies add gnupg openssl wget zip \
+RUN apk --no-cache --update --virtual .build-dependencies add gnupg openssl wget zip \
     && update-ca-certificates
 
 # Download and install RainLoop
@@ -35,6 +35,6 @@ ENV MEMORY_LIMIT="128M" \
 RUN chown "www-data." "${RAINLOOP_ROOT}" -R && \
     find "${RAINLOOP_ROOT}" -type d -exec chmod 755 {} \; && \
     find "${RAINLOOP_ROOT}" -type f -exec chmod 644 {} \; && \
-    if [ ! -f "{RAINLOOP_ROOT}/.user.ini" ]; then \
-        printf "%s\n%s\n%s" "memory_limit = ${MEMORY_LIMIT}" "upload_max_filesize = ${UPLOAD_MAX_FILESIZE}" "post_max_size = ${POST_MAX_SIZE}" \
+    if [ ! -f "${RAINLOOP_ROOT}/.user.ini" ]; then \
+        printf "%s\n%s\n%s" "memory_limit = ${MEMORY_LIMIT}" "upload_max_filesize = ${UPLOAD_MAX_FILESIZE}" "post_max_size = ${POST_MAX_SIZE}" > "${RAINLOOP_ROOT}/.user.ini"; \
     fi
