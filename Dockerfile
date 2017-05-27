@@ -24,10 +24,17 @@ RUN export TMP_DIR="/tmp" && \
     if [ "${FINGERPRINT}" != "${GPG_FINGERPRINT}" ]; then echo "Warning! Wrong GPG fingerprint!" && exit 1; fi && \
     mkdir "${RAINLOOP_ROOT}" && \
     unzip -q "${RAINLOOP_ZIP}" -d "${RAINLOOP_ROOT}" && \
-    chown www-data. "${RAINLOOP_ROOT}" -R && \
-    find "${RAINLOOP_ROOT}" -type d -exec chmod 755 {} \; && \
-    find "${RAINLOOP_ROOT}" -type f -exec chmod 644 {} \; && \
     apk del .build-dependencies && \
     rm -rf "${TMP_DIR}/*" "/var/cache/apk/*" "/root/.gnupg"
 
-VOLUME "${RAINLOOP_ROOT}/data"
+# Take care of additional configuration stuff
+ENV MEMORY_LIMIT="128M" \
+    UPLOAD_MAX_FILESIZE="32M" \
+    POST_MAX_SIZE="64M"
+
+RUN chown "www-data." "${RAINLOOP_ROOT}" -R && \
+    find "${RAINLOOP_ROOT}" -type d -exec chmod 755 {} \; && \
+    find "${RAINLOOP_ROOT}" -type f -exec chmod 644 {} \; && \
+    if [ ! -f "{RAINLOOP_ROOT}/.user.ini" ]; then \
+        printf "%s\n%s\n%s" "memory_limit = ${MEMORY_LIMIT}" "upload_max_filesize = ${UPLOAD_MAX_FILESIZE}" "post_max_size = ${POST_MAX_SIZE}" \
+    fi
