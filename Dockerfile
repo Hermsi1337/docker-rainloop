@@ -35,6 +35,4 @@ ENV MEMORY_LIMIT="128M" \
 RUN chown "www-data." "${RAINLOOP_ROOT}" -R && \
     find "${RAINLOOP_ROOT}" -type d -exec chmod 755 {} \; && \
     find "${RAINLOOP_ROOT}" -type f -exec chmod 644 {} \; && \
-    if [ ! -f "${RAINLOOP_ROOT}/.user.ini" ]; then \
-        printf "%s\n%s\n%s" "memory_limit = ${MEMORY_LIMIT}" "upload_max_filesize = ${UPLOAD_MAX_FILESIZE}" "post_max_size = ${POST_MAX_SIZE}" > "${RAINLOOP_ROOT}/.user.ini"; \
-    fi
+    printf "%s\n%s\n%s" "memory_limit = ${MEMORY_LIMIT}" "upload_max_filesize = ${UPLOAD_MAX_FILESIZE}" "post_max_size = ${POST_MAX_SIZE}" > "${RAINLOOP_ROOT}/.user.ini"; \
