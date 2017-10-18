@@ -13,7 +13,8 @@ I'd recommend to use docker-compose for spawning containers since it's the easie
 
 1. Clone the repository of this project:
    ```
-   $ git clone https://github.com/Hermsi1337/docker-rainloop.git && cd docker-rainloop
+   $ git clone https://github.com/Hermsi1337/docker-rainloop.git rainloop && \
+   cd rainloop
    ```
 
 2. [OPTIONAL] Open up docker-compose.yml and change the public-port in line 16:
